@@ -65,6 +65,7 @@ const logger = process.env.NODE_ENV === 'production'
     transports: [
       new winston.transports.File(options.info_file),
       new winston.transports.File(options.error_file),
+      new winston.transports.Console(options.console),
     ],
     exitOnError: false,
   })
