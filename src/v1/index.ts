@@ -70,7 +70,7 @@ router.delete('/like/:id', async (req: Request, res: Response, next: NextFunctio
     let photo = await Photo.findOne({ where: { id } });
 
     if (!photo) {
-      return res.status(400).json({ error: 1, errMsg: 'invalid photo id' });
+      return res.status(400).json({ error: 2, errMsg: 'invalid photo id' });
     }
 
     photo = await photo.update({ like: photo.like - 1 });
@@ -117,6 +117,10 @@ router.post('/score', upload.single('image'), async (req: Request, res: Response
 
 router.post('/photo', uploadLocal.single('image'), async (req: Request, res: Response, next: NextFunction) => {
   const { nickname, score } = req.body;
+
+  if (!nickname || !score) {
+    return res.status(400).json({ error: 3 });
+  }
 
   try {
     const photo = await Photo.create({ nickname, score, url: req.file.filename, like: 0 });
